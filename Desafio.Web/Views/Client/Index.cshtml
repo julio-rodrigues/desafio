@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Desafio.Web.Models.ClientViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Clientes";
 }
 
 <h2>Clientes</h2>
@@ -20,26 +20,32 @@
         <th>
             @Html.DisplayNameFor(model => model.CPF)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CPF)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.ClientId }) |
-            @Html.ActionLink("Detalhe", "Details", new { id=item.ClientId }) |
-            @Html.ActionLink("Deletar", "Delete", new { id=item.ClientId })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CPF)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Product.Name)
+    </td>
+    <td>
+        @Html.ActionLink("Editar", "Edit", new { id = item.ClientId }) |
+        @Html.ActionLink("Detalhe", "Details", new { id = item.ClientId }) |
+        @Html.ActionLink("Deletar", "Delete", new { id = item.ClientId })
+    </td>
+</tr>
 }
 
 </table>

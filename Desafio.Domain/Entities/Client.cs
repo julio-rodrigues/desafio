@@ -10,5 +10,9 @@ namespace Desafio.Domain.Entities {
         public string Name { get; set; }
         public string Email { get; set; }
         public string CPF { get; set; }
+
+        public Guid ProductId { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 }

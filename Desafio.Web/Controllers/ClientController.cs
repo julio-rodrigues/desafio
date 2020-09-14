@@ -15,6 +15,7 @@ using Desafio.Web.Models;
 namespace Desafio.Web.Controllers {
     public class ClientController : Controller {
         private ClientRepository _clientRepository = new ClientRepository();
+        private ProductRepository _productRepository = new ProductRepository();
 
         // GET: Client
         public ActionResult Index() {
@@ -37,6 +38,7 @@ namespace Desafio.Web.Controllers {
 
         // GET: Client/Create
         public ActionResult Create() {
+            ViewBag.Products = new SelectList(_productRepository.GetWhere(p => p.Ativo), "ProductId", "Name");
             return View();
         }
 
@@ -47,13 +49,21 @@ namespace Desafio.Web.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Create(ClientViewModel clientViewModel) {
             var clientDomain = Mapper.Map<ClientViewModel, Client>(clientViewModel);
+
+            if(_clientRepository.NameExist(clientDomain.Name, clientDomain.ClientId)) {
+                ModelState.AddModelError("Name", "Esse nome ja esta em uso");
+            }
+
+            if (_clientRepository.GetWhere(c => c.ProductId == clientDomain.ProductId).Count > 0) {
+                ModelState.AddModelError("ProductId", "Esse produto ja esta associado á outro cliente");
+            }
+
             if (ModelState.IsValid) {
-
                 _clientRepository.Add(clientDomain);
-
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Products = new SelectList(_productRepository.GetWhere(p => p.Ativo), "ProductId", "Name", clientDomain.ProductId);
             return View(clientViewModel);
         }
 

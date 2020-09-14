@@ -21,10 +21,15 @@ namespace Desafio.Web.Models {
         [DisplayName("Email")]
         public string Email { get; set; }
 
-        [MaxLength(11, ErrorMessage = "Esse campo deve ter ate 11 caracteres.")]
-        [Required]
+        [Required(ErrorMessage = "É necessário preencher o campo")]
         [DisplayName("CPF")]
         public string CPF { get; set; }
+
+        [Required(ErrorMessage = "É necessário selecionar um produto")]
+        [DisplayName("Produto")]
+        public Guid ProductId { get; set; }
+
+        public virtual ProductViewModel Product { get; set; }
 
     }
 }
