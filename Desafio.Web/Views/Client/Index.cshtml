@@ -26,26 +26,39 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Email)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.CPF)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Product.Name)
-    </td>
-    <td>
-        @Html.ActionLink("Editar", "Edit", new { id = item.ClientId }) |
-        @Html.ActionLink("Detalhe", "Details", new { id = item.ClientId }) |
-        @Html.ActionLink("Deletar", "Delete", new { id = item.ClientId })
-    </td>
-</tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <span class ="CPF">@Html.DisplayFor(modelItem => item.CPF) </span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.ClientId }) |
+                @Html.ActionLink("Detalhe", "Details", new { id = item.ClientId }) |
+                @Html.ActionLink("Deletar", "Delete", new { id = item.ClientId })
+            </td>
+        </tr>
+    }
 
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/jqueryMask")
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('.CPF').mask('999.999.999-99', { placeholder: "___.___.___-__" });
+        });
+
+    </script>
+}

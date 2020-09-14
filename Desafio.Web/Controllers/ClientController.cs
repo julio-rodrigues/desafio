@@ -72,13 +72,16 @@ namespace Desafio.Web.Controllers {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             var client = _clientRepository.GetById(id);
 
             if (client == null) {
                 return HttpNotFound();
             }
 
+            
             var clientViewModel = Mapper.Map<Client, ClientViewModel>(client);
+            ViewBag.Products = new SelectList(_productRepository.GetWhere(p => p.Ativo), "ProductId", "Name", clientViewModel.ProductId);
             return View(clientViewModel);
         }
 
@@ -89,11 +92,22 @@ namespace Desafio.Web.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ClientViewModel clientViewModel) {
             var clientDomain = Mapper.Map<ClientViewModel, Client>(clientViewModel);
+
+            if (_clientRepository.NameExist(clientDomain.Name, clientDomain.ClientId)) {
+                ModelState.AddModelError("Name", "Esse nome ja esta em uso");
+            }
+
+            if (_clientRepository.GetWhere(c => c.ProductId == clientDomain.ProductId && c.ClientId != clientDomain.ClientId).Count > 0) {
+                ModelState.AddModelError("ProductId", "Esse produto ja esta associado á outro cliente");
+            }
+
             if (ModelState.IsValid) {
 
                 _clientRepository.Update(clientDomain);
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Products = new SelectList(_productRepository.GetWhere(p => p.Ativo), "ProductId", "Name", clientDomain.ProductId);
             return View(clientViewModel);
         }
 

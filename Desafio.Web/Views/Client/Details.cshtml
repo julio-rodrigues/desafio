@@ -31,15 +31,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CPF)
+            <span class="CPF">@Html.DisplayFor(model => model.CPF) </span>
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ProductViewModel.Name)
+            @Html.DisplayNameFor(model => model.Product.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductViewModel.Name)
+            @Html.DisplayFor(model => model.Product.Name)
         </dd>
 
     </dl>
@@ -48,3 +48,16 @@
     @Html.ActionLink("Editar", "Edit", new { id = Model.ClientId }) |
     @Html.ActionLink("Voltar á lista", "Index")
 </p>
+
+@section Scripts {
+    @Scripts.Render("~/jqueryMask")
+
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('.CPF').mask('999.999.999-99', { placeholder: "___.___.___-__" });
+        });
+
+    </script>
+}
